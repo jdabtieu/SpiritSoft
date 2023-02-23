@@ -1,0 +1,52 @@
+{% extends "admin/base.html" %}
+
+{% load static %}
+
+{% block title %}{{ title }} | SpiritSoft{% endblock %}
+
+{% block nav-global %}
+    {% if menu %}
+    </div>
+    <div id="admin_menu_container">
+        <div class="tabs">
+            <ul>
+                {% for title, item in menu.items %}
+                <li class="{% if item.active %}active{% endif %}{% if item.children|length > 1 %} has-child{% endif %}">
+                    <a href="{{ item.url }}">{{ item.title }} {% if item.children|length > 1 %}<span class="arrow"></span>{% endif %}</a>
+
+                    {% if item.children|length > 1 %}
+                    <ul>
+                        {% for sub in item.children %}
+                            <li><a href="{{ sub.url }}">{{ sub.title }}</a></li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    {% endif %}
+
+    {% for title, item in menu.items %}
+        {% if item.active and item.children|length > 1 %}
+        <div id="secondary-nav">
+            <ul>
+            {% for sub in item.children %}
+                <li class="{% if sub.active %}active{% endif %}"><a href="{{ sub.url }}">{{ sub.title }}</a></li>
+            {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+    {% endfor %}
+
+{% endblock %}
+
+{% block branding %}
+    {% if brandmark %}
+    <img src="{% static brandmark %}" id="branding" />
+    {% else %}
+    <h1 id="site-name"><a href="{% url 'admin:index' %}">SpiritSoft</a></h1>
+    {% endif %}
+{% endblock %}
