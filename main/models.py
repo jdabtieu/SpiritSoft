@@ -2,7 +2,8 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.core.validators import MinValueValidator, MaxValueValidator, MinLengthValidator
 from django.db import models
 from django.db.models import F
-from django.db.models.signals import pre_delete, pre_save, post_save
+from django.db.models.functions import Greatest
+from django.db.models.signals import m2m_changed, pre_delete, pre_save, post_save
 from django.dispatch import receiver
 
 
@@ -55,7 +56,7 @@ class Attendance(models.Model):
     Tracks attendance for students in events
     """
     event = models.OneToOneField(Event, on_delete=models.CASCADE)
-    students = models.ManyToManyField(Student)
+    students = models.ManyToManyField(Student, blank=True)
 
     class Meta:
         verbose_name_plural = 'attendance'
@@ -64,7 +65,7 @@ class Attendance(models.Model):
         return str(self.event)
 
 @receiver(post_save, sender=Event)
-def update_attendance(sender, instance, created, **kwargs):
+def create_attendance(sender, instance, created, **kwargs):
     if created:
         Attendance.objects.create(event=instance).save()
 
@@ -77,11 +78,21 @@ def update_event_points(sender, instance, **kwargs):
     except ObjectDoesNotExist:
         return  # Object being imported
     diff = instance.points - old_inst.points
-    instance.attendance.students.all().update(points=F('points') + diff)
+    instance.attendance.students.all().update(points=Greatest(F('points') + diff, 0))
 
 @receiver(pre_delete, sender=Event)
 def delete_event_points(sender, instance, **kwargs):
-    instance.attendance.students.all().update(points=F('points') - instance.points)
+    instance.attendance.students.all().update(points=Greatest(F('points') - instance.points, 0))
+
+
+@receiver(m2m_changed, sender=Attendance.students.through)
+def update_attendance(sender, instance, action, pk_set, **kwargs):
+    if action == "pre_add":
+        s = Student.objects.filter(pk__in=pk_set)
+        s.update(points=F('points') + instance.event.points)
+    elif action == "pre_remove":
+        s = Student.objects.filter(pk__in=pk_set)
+        s.update(points=Greatest(F('points') - instance.event.points, 0))
 
 class PrizeCategory(models.Model):
     """
