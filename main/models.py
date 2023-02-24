@@ -1,6 +1,8 @@
+from django.core.exceptions import ObjectDoesNotExist
 from django.core.validators import MinValueValidator, MaxValueValidator, MinLengthValidator
 from django.db import models
-from django.db.models.signals import post_save
+from django.db.models import F
+from django.db.models.signals import pre_delete, pre_save, post_save
 from django.dispatch import receiver
 
 
@@ -10,13 +12,17 @@ class Student(models.Model):
     """
     last_name = models.CharField(max_length=60, validators=[MinLengthValidator(1)])
     first_name = models.CharField(max_length=60, validators=[MinLengthValidator(1)])
-    number = models.PositiveIntegerField(unique=True)
+    number = models.PositiveIntegerField(unique=True, verbose_name='Student Number')
     grade = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(20)])
     email = models.EmailField(max_length=180, validators=[MinLengthValidator(1)])
-    points = models.PositiveIntegerField()
+    points = models.IntegerField(default=0)
 
     def __str__(self):
         return f'{self.last_name}, {self.first_name} ({self.number}) - {self.grade}'
+
+    def save(self, *args, **kwargs):
+        self.points = max(self.points, 0)
+        super(Student, self).save(*args, **kwargs)
 
 
 class EventCategory(models.Model):
@@ -42,13 +48,13 @@ class Event(models.Model):
     category = models.ForeignKey(EventCategory, on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
-        return f'{self.name} ({self.date})'
+        return f'{self.name} ({self.date}) {self.points}pts'
 
 class Attendance(models.Model):
     """
     Tracks attendance for students in events
     """
-    event = models.ForeignKey(Event, on_delete=models.CASCADE)
+    event = models.OneToOneField(Event, on_delete=models.CASCADE)
     students = models.ManyToManyField(Student)
 
     class Meta:
@@ -61,6 +67,21 @@ class Attendance(models.Model):
 def update_attendance(sender, instance, created, **kwargs):
     if created:
         Attendance.objects.create(event=instance).save()
+
+@receiver(pre_save, sender=Event)
+def update_event_points(sender, instance, **kwargs):
+    if instance.pk is None:  # Object being created
+        return
+    try:
+        old_inst = Event.objects.get(id=instance.id)
+    except ObjectDoesNotExist:
+        return  # Object being imported
+    diff = instance.points - old_inst.points
+    instance.attendance.students.all().update(points=F('points') + diff)
+
+@receiver(pre_delete, sender=Event)
+def delete_event_points(sender, instance, **kwargs):
+    instance.attendance.students.all().update(points=F('points') - instance.points)
 
 class PrizeCategory(models.Model):
     """
@@ -84,4 +105,4 @@ class Prize(models.Model):
     category = models.ForeignKey(PrizeCategory, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f'{self.name} ({self.category})'
+        return f'{self.name} ({self.category}) {self.points}pts'

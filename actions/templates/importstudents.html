@@ -1,0 +1,51 @@
+{% extends "admin/base_site.html" %}
+
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'admin/css/forms.css' %}">
+<style>
+    .mb-3 {
+        margin-bottom: 1rem!important;
+    }
+
+    input[type=file] {
+        cursor: pointer;
+        display: block;
+        width: 300px;
+        padding: .375rem .75rem .375rem 110px;
+        font-size: 1rem;
+        line-height: 1.5;
+        border: 1px solid gray;
+        border-radius: .25rem;
+        position: relative;
+    }
+
+    input::file-selector-button {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100px;
+        height: 100%;
+        margin: 0;
+        border: none;
+        border-right: 1px solid gray;
+        padding: .375rem;
+        cursor: pointer;
+    }
+
+</style>
+<form method="POST" enctype="multipart/form-data" id="importFrm">
+    {% csrf_token %}
+    <div class="module aligned">
+        <div class="mb-3">
+            <input type="file" name="data" required>
+        </div>
+        Data can be uploaded in <a href="{% static 'admin/sample_student_data.csv' %}">this format</a> or in PowerSchool format.
+    </div>
+    <div class="submit-row">
+        <input type="submit" value="Save" class="default" name="_save">
+    </div>
+</form>
+{% endblock %}
+

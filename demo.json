@@ -1,0 +1,470 @@
+[
+{
+  "model": "main.eventcategory",
+  "pk": 1,
+  "fields": {
+    "name": "Athletic"
+  }
+},
+{
+  "model": "main.eventcategory",
+  "pk": 2,
+  "fields": {
+    "name": "SAC"
+  }
+},
+{
+  "model": "main.eventcategory",
+  "pk": 3,
+  "fields": {
+    "name": "Fundraising"
+  }
+},
+{
+  "model": "main.event",
+  "pk": 1,
+  "fields": {
+    "name": "Played in/Spectated Basketball Qualifiers",
+    "date": "2022-12-05",
+    "points": 10,
+    "category": 1
+  }
+},
+{
+  "model": "main.event",
+  "pk": 2,
+  "fields": {
+    "name": "Played in/Spectated Basketball Qualifiers",
+    "date": "2022-12-01",
+    "points": 10,
+    "category": 1
+  }
+},
+{
+  "model": "main.event",
+  "pk": 3,
+  "fields": {
+    "name": "Played in/Spectated Basketball Semi-Finals",
+    "date": "2022-12-20",
+    "points": 30,
+    "category": 1
+  }
+},
+{
+  "model": "main.event",
+  "pk": 4,
+  "fields": {
+    "name": "Played in/Spectated Basketball Finals",
+    "date": "2022-12-22",
+    "points": 30,
+    "category": 1
+  }
+},
+{
+  "model": "main.event",
+  "pk": 5,
+  "fields": {
+    "name": "Participated in Sports Team Tryouts",
+    "date": "2023-01-01",
+    "points": 20,
+    "category": 1
+  }
+},
+{
+  "model": "main.event",
+  "pk": 6,
+  "fields": {
+    "name": "Bought tickets to Winter Wonderland",
+    "date": "2022-12-21",
+    "points": 20,
+    "category": 2
+  }
+},
+{
+  "model": "main.event",
+  "pk": 7,
+  "fields": {
+    "name": "Filled out Bingo Card for Clubs Fair",
+    "date": "2022-11-17",
+    "points": 30,
+    "category": 2
+  }
+},
+{
+  "model": "main.event",
+  "pk": 8,
+  "fields": {
+    "name": "Raised money for Terry Fox Run",
+    "date": "2022-11-01",
+    "points": 10,
+    "category": 3
+  }
+},
+{
+  "model": "main.event",
+  "pk": 9,
+  "fields": {
+    "name": "Paid school activity fee",
+    "date": "2022-10-28",
+    "points": 10,
+    "category": 3
+  }
+},
+{
+  "model": "main.event",
+  "pk": 10,
+  "fields": {
+    "name": "Participated in Sports Day",
+    "date": "2022-10-20",
+    "points": 15,
+    "category": 1
+  }
+},
+{
+  "model": "main.prizecategory",
+  "pk": 1,
+  "fields": {
+    "name": "School"
+  }
+},
+{
+  "model": "main.prizecategory",
+  "pk": 2,
+  "fields": {
+    "name": "Food"
+  }
+},
+{
+  "model": "main.prizecategory",
+  "pk": 3,
+  "fields": {
+    "name": "Merch/Clothing"
+  }
+},
+{
+  "model": "main.prize",
+  "pk": 1,
+  "fields": {
+    "name": "Homework pass",
+    "points": 50,
+    "category": 1
+  }
+},
+{
+  "model": "main.prize",
+  "pk": 2,
+  "fields": {
+    "name": "Free pizza",
+    "points": 20,
+    "category": 2
+  }
+},
+{
+  "model": "main.prize",
+  "pk": 3,
+  "fields": {
+    "name": "Free Box of Jumbo Freezies",
+    "points": 100,
+    "category": 2
+  }
+},
+{
+  "model": "main.prize",
+  "pk": 4,
+  "fields": {
+    "name": "Free School Hoodie/T-Shirt",
+    "points": 200,
+    "category": 3
+  }
+},
+{
+  "model": "main.student",
+  "pk": 1,
+  "fields": {
+    "last_name": "Li",
+    "first_name": "Sam",
+    "number": 14139,
+    "grade": 9,
+    "email": "samli@fbla.ca",
+    "points": 0
+  }
+},
+{
+  "model": "main.student",
+  "pk": 2,
+  "fields": {
+    "last_name": "Lam",
+    "first_name": "Alex",
+    "number": 14140,
+    "grade": 9,
+    "email": "alexlam@fbla.ca",
+    "points": 0
+  }
+},
+{
+  "model": "main.student",
+  "pk": 3,
+  "fields": {
+    "last_name": "Brennan",
+    "first_name": "Sophie",
+    "number": 14141,
+    "grade": 9,
+    "email": "sophiebrennan@fbla.ca",
+    "points": 0
+  }
+},
+{
+  "model": "main.student",
+  "pk": 4,
+  "fields": {
+    "last_name": "Anthony",
+    "first_name": "Lucy",
+    "number": 14142,
+    "grade": 9,
+    "email": "lucyanthony@fbla.ca",
+    "points": 0
+  }
+},
+{
+  "model": "main.student",
+  "pk": 5,
+  "fields": {
+    "last_name": "Delavinias",
+    "first_name": "Ivy",
+    "number": 14143,
+    "grade": 10,
+    "email": "ivydelavinias@fbla.ca",
+    "points": 0
+  }
+},
+{
+  "model": "main.student",
+  "pk": 6,
+  "fields": {
+    "last_name": "Vance",
+    "first_name": "Bob",
+    "number": 14144,
+    "grade": 10,
+    "email": "bobvance@fbla.ca",
+    "points": 0
+  }
+},
+{
+  "model": "main.student",
+  "pk": 7,
+  "fields": {
+    "last_name": "Smith",
+    "first_name": "Michael",
+    "number": 14145,
+    "grade": 10,
+    "email": "michaelsmith@fbla.ca",
+    "points": 0
+  }
+},
+{
+  "model": "main.student",
+  "pk": 8,
+  "fields": {
+    "last_name": "Maron",
+    "first_name": "Angela",
+    "number": 14146,
+    "grade": 10,
+    "email": "angelamaron@fbla.ca",
+    "points": 0
+  }
+},
+{
+  "model": "main.student",
+  "pk": 9,
+  "fields": {
+    "last_name": "Grant",
+    "first_name": "Marcus",
+    "number": 14147,
+    "grade": 11,
+    "email": "marcusgrant@fbla.ca",
+    "points": 0
+  }
+},
+{
+  "model": "main.student",
+  "pk": 10,
+  "fields": {
+    "last_name": "Woods",
+    "first_name": "Scott",
+    "number": 14148,
+    "grade": 11,
+    "email": "scottwoords@fbla.ca",
+    "points": 0
+  }
+},
+{
+  "model": "main.student",
+  "pk": 11,
+  "fields": {
+    "last_name": "Lin",
+    "first_name": "Amy",
+    "number": 14149,
+    "grade": 11,
+    "email": "amylin@fbla.ca",
+    "points": 0
+  }
+},
+{
+  "model": "main.student",
+  "pk": 12,
+  "fields": {
+    "last_name": "Wong",
+    "first_name": "Emily",
+    "number": 14150,
+    "grade": 11,
+    "email": "emilywong@fbla.ca",
+    "points": 0
+  }
+},
+{
+  "model": "main.student",
+  "pk": 13,
+  "fields": {
+    "last_name": "Wu",
+    "first_name": "John",
+    "number": 14151,
+    "grade": 12,
+    "email": "johnwu@fbla.ca",
+    "points": 0
+  }
+},
+{
+  "model": "main.student",
+  "pk": 14,
+  "fields": {
+    "last_name": "Singh",
+    "first_name": "David",
+    "number": 14152,
+    "grade": 12,
+    "email": "davidsingh@fbla.ca",
+    "points": 0
+  }
+},
+{
+  "model": "main.student",
+  "pk": 15,
+  "fields": {
+    "last_name": "Rober",
+    "first_name": "Amanda",
+    "number": 14153,
+    "grade": 12,
+    "email": "amandarober@fbla.ca",
+    "points": 0
+  }
+},
+{
+  "model": "main.student",
+  "pk": 16,
+  "fields": {
+    "last_name": "White",
+    "first_name": "Taylor",
+    "number": 14154,
+    "grade": 12,
+    "email": "taylorwhite@fbla.ca",
+    "points": 0
+  }
+},
+{
+  "model": "main.attendance",
+  "pk": 1,
+  "fields": {
+    "event": 1,
+    "students": []
+  }
+},
+{
+  "model": "main.attendance",
+  "pk": 2,
+  "fields": {
+    "event": 2,
+    "students": []
+  }
+},
+{
+  "model": "main.attendance",
+  "pk": 3,
+  "fields": {
+    "event": 3,
+    "students": []
+  }
+},
+{
+  "model": "main.attendance",
+  "pk": 4,
+  "fields": {
+    "event": 4,
+    "students": []
+  }
+},
+{
+  "model": "main.attendance",
+  "pk": 5,
+  "fields": {
+    "event": 5,
+    "students": []
+  }
+},
+{
+  "model": "main.attendance",
+  "pk": 6,
+  "fields": {
+    "event": 6,
+    "students": []
+  }
+},
+{
+  "model": "main.attendance",
+  "pk": 7,
+  "fields": {
+    "event": 7,
+    "students": []
+  }
+},
+{
+  "model": "main.attendance",
+  "pk": 8,
+  "fields": {
+    "event": 8,
+    "students": []
+  }
+},
+{
+  "model": "main.attendance",
+  "pk": 9,
+  "fields": {
+    "event": 9,
+    "students": []
+  }
+},
+{
+  "model": "main.attendance",
+  "pk": 10,
+  "fields": {
+    "event": 10,
+    "students": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 1,
+  "fields": {
+    "password": "pbkdf2_sha256$390000$F8JZET6PPzJeNnQIj7sYQP$tcu+qLa8SuEYexdgB3w41/wvCdb/uRFlUu8JS12Tb5A=",
+    "last_login": "2023-02-24T00:37:19.723Z",
+    "is_superuser": true,
+    "username": "fbla",
+    "first_name": "",
+    "last_name": "",
+    "email": "me@fbla.ca",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2023-02-24T00:37:08.023Z",
+    "groups": [],
+    "user_permissions": []
+  }
+}
+]

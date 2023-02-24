@@ -6,6 +6,7 @@ import socket
 from threading import Thread
 
 django_process = None
+browser = None
 port = 0
 
 class WebPage(QtWebEngineWidgets.QWebEnginePage):
@@ -25,17 +26,45 @@ class WebPage(QtWebEngineWidgets.QWebEnginePage):
             return False
         return super(WebPage, self).acceptNavigationRequest(url, kind, is_main_frame)
 
+class Browser(QtWebEngineWidgets.QWebEngineView):
+    def __init__(self, *args, **kwargs):
+        super(Browser, self).__init__(*args, **kwargs)
+        self.setStyleSheet("""
+            body {
+                background-color: black;
+            }
+            """)
+
+    def contextMenuEvent(self, event):
+        return  # Disable the Context Menu
+
+def navigate_back(self):
+    browser.page().triggerAction(QtWebEngineWidgets.QWebEnginePage.Back)
+
+def navigate_forward(self):
+    browser.page().triggerAction(QtWebEngineWidgets.QWebEnginePage.Forward)
+
 def launch_browser():
+    global browser
     app = QtWidgets.QApplication([])
     window = QtWidgets.QMainWindow()
     window.showMaximized()
     window.setWindowTitle('SpiritSoft')
     # window.setWindowIcon(QtGui.QIcon(icon))
-    webView = QtWebEngineWidgets.QWebEngineView(window)
-    window.setCentralWidget(webView)
+    widget = QtWidgets.QWidget()
+    window.setCentralWidget(widget)
+    layout = QtWidgets.QGridLayout(widget)
+    back_btn = QtWidgets.QPushButton("Back")
+    back_btn.clicked.connect(navigate_back)
+    layout.addWidget(back_btn, 0, 0)
+    forward_btn = QtWidgets.QPushButton("Forward")
+    forward_btn.clicked.connect(navigate_forward)
+    layout.addWidget(forward_btn, 0, 1)
+    browser = Browser(window)
+    layout.addWidget(browser, 1, 0, 1, 2)
     page = WebPage(f'http://spiritsoft.localhost:{port}/admin/')
     page.home()
-    webView.setPage(page)
+    browser.setPage(page)
 
     window.show()
     app.exec_()
