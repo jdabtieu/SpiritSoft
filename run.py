@@ -14,35 +14,52 @@ class WebPage(QtWebEngineWidgets.QWebEnginePage):
         super(WebPage, self).__init__()
         self.root_url = root_url
 
-    def home(self):
-        self.load(QtCore.QUrl(self.root_url))
+    def goto(self, url):
+        self.load(QtCore.QUrl(url))
 
     def acceptNavigationRequest(self, url, kind, is_main_frame):
         """Open external links in browser and internal links in the webview"""
         ready_url = url.toEncoded().data().decode()
         is_clicked = kind == self.NavigationTypeLinkClicked
-        if is_clicked and self.root_url not in ready_url:
+        if is_clicked and not ready_url.startswith(self.root_url):
             QtGui.QDesktopServices.openUrl(url)
             return False
         return super(WebPage, self).acceptNavigationRequest(url, kind, is_main_frame)
 
+
 class Browser(QtWebEngineWidgets.QWebEngineView):
+    _windows = set()
+
+    # https://stackoverflow.com/questions/71319768/how-to-use-qtwebengine-createwindow-in-pyqt5
     def __init__(self, *args, **kwargs):
         super(Browser, self).__init__(*args, **kwargs)
-        self.setStyleSheet("""
-            body {
-                background-color: black;
-            }
-            """)
+        self.page().windowCloseRequested.connect(self.handleWindowCloseRequested)
 
     def contextMenuEvent(self, event):
         return  # Disable the Context Menu
 
-def navigate_back(self):
-    browser.page().triggerAction(QtWebEngineWidgets.QWebEnginePage.Back)
+    def handleWindowCloseRequested(self):
+        self._removeWindow(self)
 
-def navigate_forward(self):
-    browser.page().triggerAction(QtWebEngineWidgets.QWebEnginePage.Forward)
+    @classmethod
+    def _removeWindow(cls, window):
+        cls._windows.discard(window)
+
+    @classmethod
+    def new_window(cls):
+        window = cls()
+        cls._windows.add(window)
+        return window
+
+    def createWindow(self, mode):
+        if mode == QtWebEngineWidgets.QWebEnginePage.WebDialog:  # Popup
+            window = self.new_window()
+            window.resize(600, 500)
+            window.setWindowTitle('SpiritSoft')
+            # window.setWindowIcon(QtGui.QIcon(icon))
+            window.show()
+        return window
+
 
 def launch_browser():
     global browser
@@ -52,18 +69,10 @@ def launch_browser():
     window.setWindowTitle('SpiritSoft')
     # window.setWindowIcon(QtGui.QIcon(icon))
     widget = QtWidgets.QWidget()
-    window.setCentralWidget(widget)
-    layout = QtWidgets.QGridLayout(widget)
-    back_btn = QtWidgets.QPushButton("Back")
-    back_btn.clicked.connect(navigate_back)
-    layout.addWidget(back_btn, 0, 0)
-    forward_btn = QtWidgets.QPushButton("Forward")
-    forward_btn.clicked.connect(navigate_forward)
-    layout.addWidget(forward_btn, 0, 1)
     browser = Browser(window)
-    layout.addWidget(browser, 1, 0, 1, 2)
-    page = WebPage(f'http://spiritsoft.localhost:{port}/admin/')
-    page.home()
+    window.setCentralWidget(browser)
+    page = WebPage(f'http://spiritsoft.localhost:{port}')
+    page.goto(f'http://spiritsoft.localhost:{port}/iframe/')
     browser.setPage(page)
 
     window.show()
@@ -73,6 +82,12 @@ def launch_app():
     global django_process
     django_process = subprocess.Popen(["python", "manage.py", "runserver", str(port)])
     
+def find_free_port():
+    with closing(socket.socket(socket.AF_INET, socket.SOCK_STREAM)) as s:
+        s.bind(('', 0))
+        s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        return s.getsockname()[1]
+
 def main():
     global port
     port = find_free_port()
@@ -80,12 +95,7 @@ def main():
     app_thread.start()
     launch_browser()
     django_process.terminate()
-    
-def find_free_port():
-    with closing(socket.socket(socket.AF_INET, socket.SOCK_STREAM)) as s:
-        s.bind(('', 0))
-        s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-        return s.getsockname()[1]
+
 
 if __name__ == '__main__':
     main()
