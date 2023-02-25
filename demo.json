@@ -1,97 +1,5 @@
 [
 {
-  "model": "main.attendance",
-  "pk": 1,
-  "fields": {
-    "event": 1,
-    "students": []
-  }
-},
-{
-  "model": "main.attendance",
-  "pk": 2,
-  "fields": {
-    "event": 2,
-    "students": []
-  }
-},
-{
-  "model": "main.attendance",
-  "pk": 3,
-  "fields": {
-    "event": 3,
-    "students": []
-  }
-},
-{
-  "model": "main.attendance",
-  "pk": 4,
-  "fields": {
-    "event": 4,
-    "students": []
-  }
-},
-{
-  "model": "main.attendance",
-  "pk": 5,
-  "fields": {
-    "event": 5,
-    "students": []
-  }
-},
-{
-  "model": "main.attendance",
-  "pk": 6,
-  "fields": {
-    "event": 6,
-    "students": []
-  }
-},
-{
-  "model": "main.attendance",
-  "pk": 7,
-  "fields": {
-    "event": 7,
-    "students": [
-      4
-    ]
-  }
-},
-{
-  "model": "main.attendance",
-  "pk": 8,
-  "fields": {
-    "event": 8,
-    "students": [
-      1,
-      2,
-      3,
-      4,
-      5,
-      9,
-      11,
-      19,
-      24
-    ]
-  }
-},
-{
-  "model": "main.attendance",
-  "pk": 9,
-  "fields": {
-    "event": 9,
-    "students": []
-  }
-},
-{
-  "model": "main.attendance",
-  "pk": 10,
-  "fields": {
-    "event": 10,
-    "students": []
-  }
-},
-{
   "model": "main.eventcategory",
   "pk": 1,
   "fields": {
@@ -210,6 +118,98 @@
     "date": "2022-10-20",
     "points": 20,
     "category": 1
+  }
+},
+{
+  "model": "main.attendance",
+  "pk": 1,
+  "fields": {
+    "event": 1,
+    "students": []
+  }
+},
+{
+  "model": "main.attendance",
+  "pk": 2,
+  "fields": {
+    "event": 2,
+    "students": []
+  }
+},
+{
+  "model": "main.attendance",
+  "pk": 3,
+  "fields": {
+    "event": 3,
+    "students": []
+  }
+},
+{
+  "model": "main.attendance",
+  "pk": 4,
+  "fields": {
+    "event": 4,
+    "students": []
+  }
+},
+{
+  "model": "main.attendance",
+  "pk": 5,
+  "fields": {
+    "event": 5,
+    "students": []
+  }
+},
+{
+  "model": "main.attendance",
+  "pk": 6,
+  "fields": {
+    "event": 6,
+    "students": []
+  }
+},
+{
+  "model": "main.attendance",
+  "pk": 7,
+  "fields": {
+    "event": 7,
+    "students": [
+      4
+    ]
+  }
+},
+{
+  "model": "main.attendance",
+  "pk": 8,
+  "fields": {
+    "event": 8,
+    "students": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      9,
+      11,
+      19,
+      24
+    ]
+  }
+},
+{
+  "model": "main.attendance",
+  "pk": 9,
+  "fields": {
+    "event": 9,
+    "students": []
+  }
+},
+{
+  "model": "main.attendance",
+  "pk": 10,
+  "fields": {
+    "event": 10,
+    "students": []
   }
 },
 {
@@ -570,11 +570,56 @@
   }
 },
 {
+  "model": "actions.quarterlywinner",
+  "pk": 1,
+  "fields": {
+    "student": 4,
+    "date": "2023-02-25T16:15:38.407",
+    "points": 40
+  }
+},
+{
+  "model": "actions.quarterlywinner",
+  "pk": 2,
+  "fields": {
+    "student": 5,
+    "date": "2023-02-25T16:15:38.411",
+    "points": 10
+  }
+},
+{
+  "model": "actions.quarterlywinner",
+  "pk": 3,
+  "fields": {
+    "student": 11,
+    "date": "2023-02-25T16:15:38.415",
+    "points": 10
+  }
+},
+{
+  "model": "actions.quarterlywinner",
+  "pk": 4,
+  "fields": {
+    "student": 24,
+    "date": "2023-02-25T16:15:38.419",
+    "points": 10
+  }
+},
+{
+  "model": "actions.quarterlywinner",
+  "pk": 5,
+  "fields": {
+    "student": 3,
+    "date": "2023-02-25T16:15:38.423",
+    "points": 10
+  }
+},
+{
   "model": "auth.user",
   "pk": 1,
   "fields": {
-    "password": "pbkdf2_sha256$390000$F8JZET6PPzJeNnQIj7sYQP$tcu+qLa8SuEYexdgB3w41/wvCdb/uRFlUu8JS12Tb5A=",
-    "last_login": "2023-02-24T03:54:11.534Z",
+    "password": "pbkdf2_sha256$390000$Tlu55OwosXUTow560kO2IN$M70c1evUmJ/eZIy6Q7uFIEJa+6pah7FeDLpJzNgUyj8=",
+    "last_login": "2023-02-25T16:15:10.778",
     "is_superuser": true,
     "username": "fbla",
     "first_name": "",
@@ -582,7 +627,7 @@
     "email": "me@fbla.ca",
     "is_staff": true,
     "is_active": true,
-    "date_joined": "2023-02-24T00:37:08.023Z",
+    "date_joined": "2023-02-25T16:15:03.227",
     "groups": [],
     "user_permissions": []
   }

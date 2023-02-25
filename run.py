@@ -1,5 +1,5 @@
 from contextlib import closing
-from PyQt5 import QtCore, QtWidgets, QtGui, QtWebEngineWidgets
+from PyQt5 import QtCore, QtWidgets, QtGui, QtWebEngineWidgets, QtPrintSupport
 import socket
 import subprocess
 import socket
@@ -17,14 +17,14 @@ class WebPage(QtWebEngineWidgets.QWebEnginePage):
     def goto(self, url):
         self.load(QtCore.QUrl(url))
 
-    def acceptNavigationRequest(self, url, kind, is_main_frame):
+    def acceptNavigationRequest(self, url, mode, is_main_frame):
         """Open external links in browser and internal links in the webview"""
-        ready_url = url.toEncoded().data().decode()
-        is_clicked = kind == self.NavigationTypeLinkClicked
-        if is_clicked and not ready_url.startswith(self.root_url):
+        new_url = url.toEncoded().data().decode()
+        is_clicked = mode == self.NavigationTypeLinkClicked
+        if is_clicked and (not new_url.startswith(self.root_url) or new_url.endswith("?ext")):
             QtGui.QDesktopServices.openUrl(url)
             return False
-        return super(WebPage, self).acceptNavigationRequest(url, kind, is_main_frame)
+        return super(WebPage, self).acceptNavigationRequest(url, mode, is_main_frame)
 
 
 class Browser(QtWebEngineWidgets.QWebEngineView):
@@ -34,12 +34,19 @@ class Browser(QtWebEngineWidgets.QWebEngineView):
     def __init__(self, *args, **kwargs):
         super(Browser, self).__init__(*args, **kwargs)
         self.page().windowCloseRequested.connect(self.handleWindowCloseRequested)
+        self.page().printRequested.connect(self.handlePrint)
 
     def contextMenuEvent(self, event):
         return  # Disable the Context Menu
 
     def handleWindowCloseRequested(self):
         self._removeWindow(self)
+
+    def handlePrint(self):
+        print("bruh")
+        dialog = QtPrintSupport.QPrintDialog()
+        if dialog.exec_() == QtWidgets.QDialog.Accepted:
+            self.page().document().print_(dialog.printer())
 
     @classmethod
     def _removeWindow(cls, window):
@@ -52,12 +59,11 @@ class Browser(QtWebEngineWidgets.QWebEngineView):
         return window
 
     def createWindow(self, mode):
-        if mode == QtWebEngineWidgets.QWebEnginePage.WebDialog:  # Popup
-            window = self.new_window()
-            window.resize(600, 500)
-            window.setWindowTitle('SpiritSoft')
-            # window.setWindowIcon(QtGui.QIcon(icon))
-            window.show()
+        window = self.new_window()
+        window.resize(600, 500)
+        window.setWindowTitle('SpiritSoft')
+        # window.setWindowIcon(QtGui.QIcon(icon))
+        window.show()
         return window
 
 

@@ -1,0 +1,171 @@
+{% extends "admin/base_site.html" %}
+
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'admin/css/forms.css' %}">
+
+<div id="content-main" class="quarterly-main">
+    <form method="POST" enctype="multipart/form-data" id="importFrm" class="mb-3">
+        <div>
+            {% csrf_token %}
+            <h2>Top Scorer</h2>
+            <div class="module aligned">
+                <div class="form-row">
+                    <div class="checkbox-row">
+                        <input required type="radio" name="topscore" id="topscore_all" value="all">
+                        <label class="vCheckboxLabel" for="topscore_all">One winner overall</label>
+                    </div>
+                    <div class="checkbox-row">
+                        <input required type="radio" name="topscore" id="topscore_gr" value="gr">
+                        <label class="vCheckboxLabel" for="topscore_gr">One winner per grade</label>
+                    </div>
+                    <div class="checkbox-row">
+                        <input required type="radio" name="topscore" id="topscore_none" value="none">
+                        <label class="vCheckboxLabel" for="topscore_none">Do not pick top scorer</label>
+                    </div>
+                </div>
+            </div>
+            <h2>Random Student</h2>
+            <div class="module aligned" style="margin-bottom: 0;">
+                <div class="form-row">
+                    <div class="checkbox-row">
+                        <input required type="radio" name="random" id="random_all" value="all">
+                        <label class="vCheckboxLabel" for="random_all">One winner overall</label>
+                    </div>
+                    <div class="checkbox-row">
+                        <input required type="radio" name="random" id="random_gr" value="gr">
+                        <label class="vCheckboxLabel" for="random_gr">One winner per grade</label>
+                    </div>
+                    <div class="checkbox-row">
+                        <input required type="radio" name="random" id="random_none" value="none">
+                        <label class="vCheckboxLabel" for="random_none">Do not pick random student</label>
+                    </div>
+                </div>
+            </div>
+            <div class="module aligned">
+                <div class="form-row">
+                    <div class="checkbox-row">
+                        <input type="checkbox" name="clearpoints" id="clearpoints">
+                        <label class="vCheckboxLabel" for="clearpoints">Clear points of winner(s)?</label>
+                    </div>
+                    <div class="checkbox-row">
+                        <input type="checkbox" name="clearpointsall" id="clearpointsall">
+                        <label class="vCheckboxLabel" for="clearpointsall">Clear points of <b>all students</b>?</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div>
+            <input type="submit" value="Submit" class="default" name="_save" style="float: none;">
+        </div>
+    </form>
+    {% if winners %}
+    <button class="default button mb-3" style="float: none;" id="printBtn">Print</button>
+    <h1>Selected Winners</h1>
+    <div class="results mb-3">
+        <table style="min-width: 50vw;">
+            <thead>
+                <tr>
+                    <th scope="col" class="column-placement">
+                        <div class="text"></div>
+                        <div class="clear"></div>
+                    </th>
+                    <th scope="col" class="column-placement">
+                        <div class="text">Name</div>
+                        <div class="clear"></div>
+                    </th>
+                    <th scope="col" class="column-placement">
+                        <div class="text">Points</div>
+                        <div class="clear"></div>
+                    </th>
+                    <th scope="col" class="column-placement">
+                        <div class="text">Student Number</div>
+                        <div class="clear"></div>
+                    </th>
+                    <th scope="col" class="column-placement">
+                        <div class="text">Email</div>
+                        <div class="clear"></div>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for label, winner in winners.items %}
+                <tr>
+                    <td>{{ label }}</td>
+                    <td>{{ winner.last_name }}, {{ winner.first_name }}</td>
+                    <td>{{ winner.points }}</td>
+                    <td>{{ winner.number }}</td>
+                    <td>{{ winner.email }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <h1>Prizes</h1>
+    <div class="results mb-3">
+        <table style="min-width: 50vw;">
+            <thead>
+                <tr>
+                    <th scope="col" class="column-placement">
+                        <div class="text">Prize</div>
+                        <div class="clear"></div>
+                    </th>
+                    <th scope="col" class="column-placement">
+                        <div class="text">Category</div>
+                        <div class="clear"></div>
+                    </th>
+                    <th scope="col" class="column-placement">
+                        <div class="text">Points Required</div>
+                        <div class="clear"></div>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for prize in prizes %}
+                <tr>
+                    <td>{{ prize.name }}</td>
+                    <td>{{ prize.category.name }}</td>
+                    <td>{{ prize.points }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <script>
+        function printReport() {
+            const queries = ["#content > h1", "#importFrm", "#user-tools", ".breadcrumbs", "#printBtn", "#content-related"];
+            for (let query of queries) {
+                document.querySelector(query).classList.add("no-print");
+            }
+            window.print();
+            if (navigator.userAgent.index(QtWebEngine) != -1) {
+                
+            }
+            for (let query of queries) {
+                document.querySelector(query).classList.remove("no-print");
+            }
+            document.write(navigator.userAgent)
+        }
+
+        document.getElementById("printBtn").addEventListener("click", printReport);
+    </script>
+    {% endif %}
+</div>
+{% if past_winners|length > 0 %}
+<div id="content-related" class="quarterly-related" style="margin-left: -300px; margin-right: 0;">
+    <div class="module" id="recent-actions-module">
+        <h2>Past Winners (limit 20)</h2>
+        <ul class="actionlist">
+        {% for winner in past_winners %}
+            <li class="winnerlink" style="list-style-type: none;">
+                <a href="/admin/main/student/{{ winner.student.pk }}/change/">{{ winner.student.last_name }}, {{ winner.student.first_name }}</a>
+                <br>
+                <span class="mini quiet">{{ winner.points}}pts at {{ winner.date }}</span>
+            </li>
+        {% endfor %}
+        </ul>
+    </div>
+</div>
+{% endif %}
+{% endblock %}
