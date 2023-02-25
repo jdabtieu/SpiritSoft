@@ -86,7 +86,7 @@ def launch_browser():
 
 def launch_app():
     global django_process
-    django_process = subprocess.Popen(["python", "manage.py", "runserver", str(port)])
+    django_process = subprocess.Popen(["python", "manage.py", "runserver", str(port), "--noreload"])
     
 def find_free_port():
     with closing(socket.socket(socket.AF_INET, socket.SOCK_STREAM)) as s:
