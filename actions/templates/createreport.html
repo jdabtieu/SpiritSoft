@@ -1,0 +1,61 @@
+{% extends "admin/base_site.html" %}
+
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'admin/css/forms.css' %}">
+<style>
+    .mb-3 {
+        margin-bottom: 1rem!important;
+    }
+</style>
+
+<form method="POST" enctype="multipart/form-data" id="importFrm" class="mb-3">
+    <div>
+        {% csrf_token %}
+        <div class="module aligned">
+            <div class="mb-3">
+                <input required type="radio" name="layout" value="separate" id="sepgrade" style="margin-top: 10px;">
+                <label class="required" for="sepgrade">Separate Grades</label>
+            </div>
+            <div class="mb-3">
+                <input required type="radio" name="layout" value="together" id="together" style="margin-top: 10px;">
+                <label class="required" for="together">Whole School</label>
+            </div>
+        </div>
+    </div>
+    <div>
+        <input type="submit" value="Generate" class="default" name="_save" style="float: none;">
+    </div>
+</form>
+{% if lb %}
+{% for group in lb %}
+<h1>{{ group.0 }}</h1>
+<div class="results">
+    <table>
+        <thead>
+            <tr>
+                <th scope="col" class="column-placement">
+                    <div class="text">Placement</div>
+                    <div class="clear"></div>
+                </th>
+                <th scope="col" class="column-placement">
+                    <div class="text">Name</div>
+                    <div class="clear"></div>
+                </th>
+                <th scope="col" class="column-placement">
+                    <div class="text">Points</div>
+                    <div class="clear"></div>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for stu in group.1 %}
+            <tr><td>{{ stu.0 }}.</td><td>{{ stu.1 }}</td><td>{{ stu.2 }}</td>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endfor %}
+{% endif %}
+{% endblock %}

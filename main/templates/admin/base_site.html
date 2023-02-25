@@ -2,11 +2,109 @@
 
 {% load static %}
 
+{% block branding %}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+    h1#site-name a:link, h1#site-name a:visited, #nav-sidebar .current-app .section:link, #nav-sidebar .current-app .section:visited, #content > h1 {
+        font-family: 'Inter', 'Roboto', sans-serif;
+        font-weight: 700;
+        color: black;
+    }
+
+    #content > h1 {
+        margin-bottom: 2em;
+    }
+
+    #header {
+        background: linear-gradient(180deg, var(--header-bg), var(--primary));
+    }
+
+    div.breadcrumbs {
+        background: linear-gradient(180deg, var(--primary), transparent);
+    }
+
+    #user-tools, #logout-form button {
+        font-weight: 400;
+    }
+
+    #nav-sidebar .module caption {
+        border-radius: 8px 8px 0 0;
+        border-collapse: separate;
+    }
+
+    #nav-sidebar .module tbody th {
+        border-left: 1px solid var(--primary);
+        border-collapse: separate;
+    }
+
+    #nav-sidebar .module tbody td {
+        border-right: 1px solid var(--primary);
+        border-collapse: separate;
+    }
+
+
+    #nav-sidebar .module tbody tr:last-child th {
+        border-radius: 0 0 0 8px;
+        border-bottom: 1px solid var(--primary);
+        border-collapse: separate;
+    }
+
+    #nav-sidebar .module tbody tr:last-child td {
+        border-radius: 0 0 8px 0;
+        border-bottom: 1px solid var(--primary);
+        border-collapse: separate;
+    }
+
+    #nav-sidebar {
+        border-right: none;
+    }
+
+    body {
+        font-family: "Inter", "Roboto", "Lucida Grande", Arial, sans-serif;
+        scroll-behavior: smooth;
+    }
+
+    :root {
+      --primary: #fbc2ba;
+      --body-fg: black;
+      --body-bg: #fdfffc;
+      --header-bg: #fe9c8f;
+      --link-fg: #0e9aa7;
+      --default-button-bg: var(--header-bg);
+      --header-color: var(--body-fg);
+      --header-link-color: var(--body-fg);
+      --breadcrumbs-bg: var(--primary);
+      --breadcrumbs-fg: var(--body-fg);
+      --breadcrumbs-link-fg: var(--body-fg);
+      --link-selected-fg: var(--link-fg);
+      --body-quiet-color: var(--body-fg);
+    }
+</style>
+<h1 id="site-name"><a href="{% url 'admin:index' %}">SpiritSoft</a></h1>
+{% endblock %}
+
+{% block welcome-msg %}{% endblock %}
+
+{% block dark-mode-vars %} {# Hijack this to inject our custom head attributes #}
+<meta charset="utf-8">
+{% endblock %}
+
+{% block userlinks %}
+{% if user.has_usable_password %}
+<a href="{% url 'admin:password_change' %}">Change password</a> /
+{% endif %}
+<form id="logout-form" method="post" action="{% url 'admin:logout' %}">
+    {% csrf_token %}
+    <button type="submit">Log out</button>
+</form>
+{% endblock %}
+
 {% block title %}{{ title }} | SpiritSoft{% endblock %}
 
 {% block nav-global %}
     {% if menu %}
-    </div>
     <div id="admin_menu_container">
         <div class="tabs">
             <ul>
@@ -41,12 +139,4 @@
         {% endif %}
     {% endfor %}
 
-{% endblock %}
-
-{% block branding %}
-    {% if brandmark %}
-    <img src="{% static brandmark %}" id="branding" />
-    {% else %}
-    <h1 id="site-name"><a href="{% url 'admin:index' %}">SpiritSoft</a></h1>
-    {% endif %}
 {% endblock %}

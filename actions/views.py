@@ -60,3 +60,43 @@ class ImportStudentsView(View):
         Student.objects.bulk_create(stu_objs, ignore_conflicts=True)
         messages.success(request, "Students successfully imported!")
         return render(request, "importstudents.html", context)
+
+class CreateReportView(View):
+    @method_decorator(staff_member_required)
+    @method_decorator(permission_required("actions.can_create_report", login_url="/admin/"))
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+
+    def get(self, request):
+        context = dict(
+            admin.site.each_context(request),
+            title='Create Report',
+        )
+        return render(request, "createreport.html", context)
+
+    def post(self, request):
+        context = dict(
+            admin.site.each_context(request),
+            title='Create Report',
+        )
+        if Student.objects.count() == 0:
+            messages.error(request, "At least 1 student required to generate a report")
+            return render(request, "createreport.html", context)
+        layout = request.POST.get("layout")
+        output = []
+        if layout == "together":
+            students = list(Student.objects.all().order_by('-points', 'first_name', 'last_name'))
+            prev_pts, prev_place = -1, -1
+            for i in range(len(students)):
+                if students[i].points != prev_pts:
+                    prev_pts = students[i].points
+                    prev_place = i + 1
+                place = prev_place
+                output.append([
+                    place,
+                    students[i].first_name + " " + students[i].last_name,
+                    students[i].points
+                ])
+            output = [["Overall", output]]
+            context["lb"] = output
+            return render(request, "createreport.html", context)
