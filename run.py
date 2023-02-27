@@ -3,7 +3,6 @@ from PyQt5 import QtCore, QtWidgets, QtGui, QtWebEngineWidgets, QtPrintSupport
 import socket
 import subprocess
 import socket
-import sys
 from threading import Thread
 
 django_process = None
@@ -85,18 +84,18 @@ def launch_browser():
     window.show()
     app.exec_()
 
+
 def launch_app():
     global django_process
-    if getattr(sys, "frozen", False):
-        django_process = subprocess.Popen(["python", "manage.py", "runserver", str(port), "--noreload"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, stdin=subprocess.DEVNULL, creationflags=subprocess.CREATE_NO_WINDOW)
-    else:
-        django_process = subprocess.Popen(["python", "manage.py", "runserver", str(port)])
-    
+    django_process = subprocess.Popen(f"python manage.py runserver {port} --noreload >NUL 2>NUL", shell=True, creationflags=subprocess.CREATE_NO_WINDOW)
+
+
 def find_free_port():
     with closing(socket.socket(socket.AF_INET, socket.SOCK_STREAM)) as s:
         s.bind(('', 0))
         s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         return s.getsockname()[1]
+
 
 def main():
     global port

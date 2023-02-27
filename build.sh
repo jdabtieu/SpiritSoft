@@ -4,7 +4,8 @@ git clone $(pwd) /tmp/SpiritSoftBuild
 cd /tmp/SpiritSoftBuild
 pyinstaller --name=core.exe manage.py
 mv dist/core.exe dist/core
-sed -i 's#"python", "manage.py"#"core/core.exe"#g' run.py
+sed -i 's/python manage.py/core\\core.exe/g' run.py
+sed -i "s/django-insecure-.*'/$(head -c 30 /dev/urandom | xxd -ps)'/g" SpiritSoft/settings.py
 cp -r actions main SpiritSoft demo.json dist/core
 dist/core/core.exe migrate
 dist/core/core.exe loaddata demo
