@@ -3,6 +3,15 @@
 {% load static %}
 
 {% block branding %}
+<h1 id="site-name"><a href="{% url 'admin:index' %}">SpiritSoft</a></h1>
+{% endblock %}
+
+{% block welcome-msg %}{% endblock %}
+
+{% block dark-mode-vars %} {# Hijack this to inject our custom head attributes #}
+<meta charset="utf-8">
+<link rel="icon" href="{% static 'favicon.png' %}">
+<!-- Favicon designed by OpenMoji – the open-source emoji and icon project. License: CC BY-SA 4.0 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -100,6 +109,27 @@
         background-position-x: -5px;
     }
 
+    #help {
+        width: 30px;
+        height: 30px;
+        background: rgba(127, 127, 127, 0.5);
+        border-radius: 5rem;
+        font-size: 25px;
+        font-weight: bold;
+        text-align: center;
+        position: fixed;
+        right: 16px;
+        bottom: 16px;
+        line-height: 1.2;
+        z-index: 1000;
+    }
+
+    #help > a, #help > a:hover {
+        padding-top: 2px;
+        text-decoration: none;
+        color: white;
+    }
+
     body {
         font-family: "Inter", "Roboto", "Lucida Grande", Arial, sans-serif;
         scroll-behavior: smooth;
@@ -121,13 +151,6 @@
       --body-quiet-color: var(--body-fg);
     }
 </style>
-<h1 id="site-name"><a href="{% url 'admin:index' %}">SpiritSoft</a></h1>
-{% endblock %}
-
-{% block welcome-msg %}{% endblock %}
-
-{% block dark-mode-vars %} {# Hijack this to inject our custom head attributes #}
-<meta charset="utf-8">
 {% endblock %}
 
 {% block userlinks %}
@@ -138,6 +161,9 @@
     {% csrf_token %}
     <button type="submit">Log out</button>
 </form>
+<div id="help">
+    <a href="https://spiritsoft.co/help" target="_blank" title="SpiritSoft Help">?</a>
+</div>
 {% endblock %}
 
 {% block title %}{{ title }} | SpiritSoft{% endblock %}
@@ -177,5 +203,4 @@
         </div>
         {% endif %}
     {% endfor %}
-
 {% endblock %}

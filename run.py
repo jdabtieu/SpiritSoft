@@ -1,4 +1,5 @@
 from contextlib import closing
+import ctypes
 from PyQt5 import QtCore, QtWidgets, QtGui, QtWebEngineWidgets, QtPrintSupport
 import socket
 import subprocess
@@ -8,6 +9,7 @@ from threading import Thread
 django_process = None
 browser = None
 port = 0
+icon = "favicon.png"
 
 class WebPage(QtWebEngineWidgets.QWebEnginePage):
     def __init__(self, root_url):
@@ -62,7 +64,7 @@ class Browser(QtWebEngineWidgets.QWebEngineView):
         window = self.new_window()
         window.resize(600, 500)
         window.setWindowTitle('SpiritSoft')
-        # window.setWindowIcon(QtGui.QIcon(icon))
+        window.setWindowIcon(QtGui.QIcon(icon))
         window.show()
         return window
 
@@ -73,7 +75,7 @@ def launch_browser():
     window = QtWidgets.QMainWindow()
     window.showMaximized()
     window.setWindowTitle('SpiritSoft')
-    # window.setWindowIcon(QtGui.QIcon(icon))
+    window.setWindowIcon(QtGui.QIcon(icon))
     widget = QtWidgets.QWidget()
     browser = Browser(window)
     window.setCentralWidget(browser)
@@ -98,6 +100,8 @@ def find_free_port():
 
 
 def main():
+    # https://stackoverflow.com/questions/1551605/how-to-set-applications-taskbar-icon-in-windows-7/1552105
+    ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID('spiritsoft.desktop.entry')
     global port
     port = find_free_port()
     app_thread = Thread(target=launch_app)

@@ -11,6 +11,7 @@ dist/core/core.exe migrate
 dist/core/core.exe loaddata demo
 pyinstaller --onefile --noconsole run.py
 mv dist/run.exe dist/SpiritSoft.exe
+cp favicon.png dist
 cd dist
 7z a SpiritSoft.zip core SpiritSoft.exe
 cd "$OLD_WD"
