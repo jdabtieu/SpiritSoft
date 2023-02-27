@@ -9,7 +9,7 @@ sed -i "s/django-insecure-.*'/$(head -c 30 /dev/urandom | xxd -ps)'/g" SpiritSof
 cp -r actions main SpiritSoft demo.json dist/core
 dist/core/core.exe migrate
 dist/core/core.exe loaddata demo
-pyinstaller --onefile --noconsole run.py
+pyinstaller --onefile --noconsole --icon favicon.png run.py
 mv dist/run.exe dist/SpiritSoft.exe
 cp favicon.png dist
 cd dist

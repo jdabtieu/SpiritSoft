@@ -149,6 +149,9 @@
         }
 
         document.getElementById("printBtn").addEventListener("click", printReport);
+        if (navigator.userAgent.indexOf("QtWebEngine") != -1) {
+            document.getElementById("printBtn").remove(); // QtWebEngine doesn't print
+        }
     </script>
     {% endif %}
 </div>

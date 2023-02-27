@@ -1,5 +1,6 @@
 from contextlib import closing
 import ctypes
+import psutil
 from PyQt5 import QtCore, QtWidgets, QtGui, QtWebEngineWidgets, QtPrintSupport
 import socket
 import subprocess
@@ -107,7 +108,10 @@ def main():
     app_thread = Thread(target=launch_app)
     app_thread.start()
     launch_browser()
-    django_process.terminate()
+    # https://stackoverflow.com/questions/4789837/how-to-terminate-a-python-subprocess-launched-with-shell-true
+    for p in psutil.Process(django_process.pid).children(recursive=True): 
+       p.kill()
+    psutil.Process(django_process.pid).kill()
 
 
 if __name__ == '__main__':

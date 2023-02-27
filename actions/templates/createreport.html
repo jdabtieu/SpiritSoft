@@ -68,10 +68,12 @@
         for (let query of queries) {
             document.querySelector(query).classList.remove("no-print");
         }
-        document.write(navigator.userAgent)
     }
 
     document.getElementById("printBtn").addEventListener("click", printReport);
+    if (navigator.userAgent.indexOf("QtWebEngine") != -1) {
+        document.getElementById("printBtn").remove(); // QtWebEngine doesn't print
+    }
 </script>
 {% endif %}
 {% endblock %}
