@@ -84,6 +84,20 @@
         width: calc(100% - 276px);
     }
 
+    .secondary-cap {
+        display: none;
+    }
+
+    #home-dashboard .secondary-cap {
+        display: table-caption;
+        text-transform: none;
+    }
+
+    #home-dashboard .primary-cap {
+        font-weight: bold;
+        border-radius: 8px 8px 0 0;
+    }
+
     #content-related.quarterly-related {
         margin: 0 0 0 -300px;
     }
@@ -98,6 +112,14 @@
         #content-related.quarterly-related {
             margin: 0;
             width: 100%;
+        }
+    }
+
+    @media screen and (min-width: 1000px) {
+        #home-dashboard {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            grid-column-gap: 24px;
         }
     }
 

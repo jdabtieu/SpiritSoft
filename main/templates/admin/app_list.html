@@ -1,0 +1,70 @@
+{% load i18n static %}
+<style>.dashboard #content { width: initial; }</style>
+<h1 style="font-weight: 700; margin: 2em 0;"><img src="{% static 'favicon.png' %}" style="height: 24px;">Welcome to SpiritSoft!</h1>
+<div id="applist">
+  <script>
+    if (document.location.pathname == "/admin/") document.querySelector("#applist").id = "home-dashboard";
+  </script>
+  <div class="module">
+    <table>
+      <caption class="primary-cap">Events</caption>
+      <caption class="secondary-cap">Manage school events and attendance</caption>
+      <tbody>
+        <tr>
+          <th scope="row"><a href="/admin/main/event/">Events</a></th><td></td>
+        </tr>
+        <tr>
+          <th scope="row"><a href="/admin/main/eventcategory/">Event Categories</a></th><td></td>
+        </tr>
+        <tr>
+          <th scope="row"><a href="/admin/main/attendance/">Attendance</a></th><td></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="module">
+    <table>
+      <caption class="primary-cap">Actions</caption>
+      <caption class="secondary-cap">Perform special actions</caption>
+      <tbody>
+        <tr>
+          <th scope="row"><a href="/admin/actions/createreport/">Create Report</a></th><td></td>
+        </tr>
+        <tr>
+          <th scope="row"><a href="/admin/actions/importstudents/">Import Students</a></th><td></td>
+        </tr>
+        <tr>
+          <th scope="row"><a href="/admin/actions/quarterlywinner/">Pick Quarterly Winners</a></th><td></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="module">
+    <table>
+      <caption class="primary-cap">Prizes</caption>
+      <caption class="secondary-cap">Manage prizes</caption>
+      <tbody>
+        <tr>
+          <th scope="row"><a href="/admin/main/prize/">Prizes</a></th><td></td>
+        </tr>
+        <tr>
+          <th scope="row"><a href="/admin/main/prizecategory/">Prize Categories</a></th><td></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="module">
+    <table>
+      <caption class="primary-cap">User Management</caption>
+      <caption class="secondary-cap">Manage administrators and students</caption>
+      <tbody>
+        <tr>
+          <th scope="row"><a href="/admin/auth/user/">Administrators</a></th><td></td>
+        </tr>
+        <tr>
+          <th scope="row"><a href="/admin/main/student/">Students</a></th><td></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -16,8 +16,7 @@
   {% include "admin/app_list.html" with app_list=app_list show_changelinks=True %}
 </div>
 <script>
-    let badtitles = ads = document.evaluate("//*[text()='Site administration']", document, null, 6);
-    for (let i = 0; i < badtitles.snapshotLength; i++) badtitles.snapshotItem(i).innerText = "Home";
+    document.querySelector("#content > h1").remove();
 </script>
 {% endblock %}
 
