@@ -26,3 +26,12 @@ class QuarterlyWinner(models.Model):
             ('can_view_winners', 'Can view quarterly winners'),
             ('can_pick_winners', 'Can pick quarterly winners'),
         ]
+
+class ImportBackup(models.Model):
+    class Meta:
+        verbose_name_plural = 'Import/Backup Data'
+        default_permissions = []
+        permissions = [
+            ('can_import_data', 'Can import data'),
+            ('can_backup_data', 'Can backup data'),
+        ]

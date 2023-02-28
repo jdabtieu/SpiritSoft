@@ -1,10 +1,7 @@
 {% load i18n static %}
 <style>.dashboard #content { width: initial; }</style>
-<h1 style="font-weight: 700; margin: 2em 0;"><img src="{% static 'favicon.png' %}" style="height: 24px;">Welcome to SpiritSoft!</h1>
+<h1 id="hometitle" class="hidden" style="font-weight: 700; margin: 2em 0;"><img src="{% static 'favicon.png' %}" style="height: 24px;">Welcome to SpiritSoft!</h1>
 <div id="applist">
-  <script>
-    if (document.location.pathname == "/admin/") document.querySelector("#applist").id = "home-dashboard";
-  </script>
   <div class="module">
     <table>
       <caption class="primary-cap">Events</caption>
@@ -35,6 +32,9 @@
         </tr>
         <tr>
           <th scope="row"><a href="/admin/actions/quarterlywinner/">Pick Quarterly Winners</a></th><td></td>
+        </tr>
+        <tr>
+          <th scope="row"><a href="/admin/actions/backup/">Import/Backup Data</a></th><td></td>
         </tr>
       </tbody>
     </table>
@@ -68,3 +68,15 @@
     </table>
   </div>
 </div>
+<script>
+    for (let tr of document.querySelectorAll("#applist tr")) {
+      if (document.location.href == tr.querySelector("a")?.href) {
+        tr.classList.add("current-model");
+        break;
+      }
+    }
+    if (document.location.pathname == "/admin/") {
+      document.querySelector("#applist").id = "home-dashboard";
+      document.querySelector("#hometitle").classList.remove("hidden")
+    }
+  </script>

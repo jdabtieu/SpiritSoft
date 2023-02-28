@@ -23,7 +23,7 @@ class WebPage(QtWebEngineWidgets.QWebEnginePage):
     def acceptNavigationRequest(self, url, mode, is_main_frame):
         """Open external links in browser and internal links in the webview"""
         new_url = url.toEncoded().data().decode()
-        is_clicked = mode == self.NavigationTypeLinkClicked
+        is_clicked = mode in [self.NavigationTypeLinkClicked, self.NavigationTypeRedirect]
         if is_clicked and (not new_url.startswith(self.root_url) or new_url.endswith("?ext")):
             QtGui.QDesktopServices.openUrl(url)
             return False
@@ -37,19 +37,12 @@ class Browser(QtWebEngineWidgets.QWebEngineView):
     def __init__(self, *args, **kwargs):
         super(Browser, self).__init__(*args, **kwargs)
         self.page().windowCloseRequested.connect(self.handleWindowCloseRequested)
-        self.page().printRequested.connect(self.handlePrint)
 
     def contextMenuEvent(self, event):
         return  # Disable the Context Menu
 
     def handleWindowCloseRequested(self):
         self._removeWindow(self)
-
-    def handlePrint(self):
-        print("bruh")
-        dialog = QtPrintSupport.QPrintDialog()
-        if dialog.exec_() == QtWidgets.QDialog.Accepted:
-            self.page().document().print_(dialog.printer())
 
     @classmethod
     def _removeWindow(cls, window):

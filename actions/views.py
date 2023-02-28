@@ -3,6 +3,8 @@ from datetime import datetime
 from django.contrib import admin, messages
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import permission_required
+from django.core.management import call_command
+from django.http import FileResponse
 from django.shortcuts import render
 from django.utils.decorators import method_decorator
 from django.views import View
@@ -206,3 +208,48 @@ class QuarterlyWinnerView(View):
             e.save()
 
         return render(request, "quarterlywinners.html", context)
+
+
+class ImportBackupView(View):
+    @method_decorator(staff_member_required)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+
+    def get(self, request):
+        context = dict(
+            admin.site.each_context(request),
+            title='Import/Backup Data',
+        )
+        return render(request, "importbackup.html", context)
+
+    @method_decorator(permission_required("actions.can_import_data", login_url="/admin/"))
+    def post(self, request):
+        context = dict(
+            admin.site.each_context(request),
+            title='Import/Backup Data',
+        )
+        
+        return render(request, "importbackup.html", context)
+
+
+@permission_required("actions.can_backup_data", login_url="/admin/")
+def create_backup(request):
+    tf = tempfile.TemporaryFile(mode='w+')
+    call_command("dumpdata", *[
+        "main.eventCategory",
+        "main.event",
+        "main.attendance",
+        "main.prizeCategory",
+        "main.prize",
+        "main.student",
+        "actions.quarterlyWinner",
+        "auth.user",
+        "--indent=2"
+    ], stdout=tf)
+    tf.seek(0)
+    data = tf.read().encode("utf-8")
+    tf.close()
+    tf = tempfile.TemporaryFile(mode='w+b')
+    tf.write(data)
+    tf.seek(0)
+    return FileResponse(tf, as_attachment=True, filename="SpiritSoft_backup.json")

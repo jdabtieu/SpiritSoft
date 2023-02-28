@@ -1,0 +1,38 @@
+{% extends "admin/base_site.html" %}
+
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'admin/css/forms.css' %}">
+<div class="flex-desktop" style="gap: 3em;">
+    <div class="fl-1 mb-3">
+        <h1>Import Data</h1>
+        <p>Upload the .json file from the backup you wish to import from</p>
+        <form method="POST" enctype="multipart/form-data" id="importFrm">
+            {% csrf_token %}
+            <div class="module aligned">
+                <div class="mb-3">
+                    <input type="file" name="data" required>
+                </div>
+            </div>
+            <div class="submit-row">
+                <input type="submit" value="Import" class="default" name="_save">
+            </div>
+        </form>
+    </div>
+    <div class="fl-1 mb-3">
+        <h1>Backup Data</h1>
+        <p>Create a backup of the current data. You can import this later on.</p>
+        <div class="ss-warning">Do not edit the data in the backup file, unless you know what you are doing.</div>
+        <div class="submit-row">
+            <input type="submit" value="Backup" class="default" name="_save" id="backupBtn">
+        </div>
+        <a href="/admin/actions/backupdl/?ext">b</a>
+    </div>
+</div>
+<script>
+    document.querySelector("#backupBtn").addEventListener("click", e => {
+        window.location.href = "/admin/actions/backupdl/?ext";
+    });
+</script>
+{% endblock %}
