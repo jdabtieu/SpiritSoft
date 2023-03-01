@@ -18,7 +18,10 @@ import uuid
 from main.models import Student, Prize
 from .models import *
 
+
 class ImportStudentsView(View):
+    """Import Students page"""
+
     @method_decorator(staff_member_required)
     @method_decorator(permission_required("actions.can_import_students", login_url="/admin/"))
     def dispatch(self, *args, **kwargs):
@@ -37,6 +40,7 @@ class ImportStudentsView(View):
             title='Import Students',
         )
         stu_objs = []
+        # Attempt to read data as CSV format
         try:
             with tempfile.TemporaryFile(mode='w+', newline='') as tf:
                 tf.write(request.FILES["data"].read().decode('utf-8'))
@@ -46,6 +50,7 @@ class ImportStudentsView(View):
             messages.error(request, "The data is not in a valid format, please ensure you uploaded the correct file")
             return render(request, "importstudents.html", context)
 
+        # Attempt to read CSV format
         try:
             for data in data_csv:
                 if list(filter(None, data)) == []:
@@ -61,16 +66,17 @@ class ImportStudentsView(View):
                 stu_objs.append(Student(last_name=last_name, first_name=first_name,
                                         email=email, number=number, grade=grade))
         except Exception:
-            import traceback
-            traceback.print_exc()
             messages.error(request, "The data is malformed, please check the format")
             return render(request, "importstudents.html", context)
+
         # If the student already exists, we don't have to re-add them
         Student.objects.bulk_create(stu_objs, ignore_conflicts=True)
         messages.success(request, "Students successfully imported!")
         return render(request, "importstudents.html", context)
 
 class CreateReportView(View):
+    """Create Reports page"""
+
     @method_decorator(staff_member_required)
     @method_decorator(permission_required("actions.can_create_report", login_url="/admin/"))
     def dispatch(self, *args, **kwargs):
@@ -94,7 +100,10 @@ class CreateReportView(View):
         layout = request.POST.get("layout")
         output = []
         if layout == "together":
+            # Get students in order of points
             students = list(Student.objects.all().order_by('-points', 'first_name', 'last_name'))
+
+            # Rank them, students with same points get same placement
             prev_pts, prev_place = -1, -1
             for i in range(len(students)):
                 if students[i].points != prev_pts:
@@ -106,14 +115,18 @@ class CreateReportView(View):
                     students[i].first_name + " " + students[i].last_name,
                     students[i].points
                 ])
+
             output = [["School Ranking", output]]
             context["lb"] = output
             return render(request, "createreport.html", context)
         elif layout == "sepgrade":
+            # Get students in order of grade and points
             for grade in Student.objects.order_by('grade').values_list('grade', flat=True).distinct():
                 curgrade = []
                 students = list(Student.objects.filter(grade=grade).order_by('-points', 'first_name', 'last_name'))
                 prev_pts, prev_place = -1, -1
+
+                # Rank them, students with same points get same placement
                 for i in range(len(students)):
                     if students[i].points != prev_pts:
                         prev_pts = students[i].points
@@ -132,6 +145,7 @@ class CreateReportView(View):
             return render(request, "createreport.html", context)
 
 class QuarterlyWinnerView(View):
+    """View/Pick Quarterly Winners page"""
     @method_decorator(staff_member_required)
     @method_decorator(permission_required("actions.can_view_winners", login_url="/admin/"))
     def dispatch(self, *args, **kwargs):
@@ -161,6 +175,7 @@ class QuarterlyWinnerView(View):
         students = list(Student.objects.values())
         winners = {}
         if topscore == "all":
+            # Determine highest score and randomly choose a student with that score
             max_score = max([s["points"] for s in students])
             scorers = [s for s in students if s["points"] == max_score]
             winner = random.choice(scorers)
@@ -172,12 +187,16 @@ class QuarterlyWinnerView(View):
                 if s["grade"] not in grades:
                     grades[s["grade"]] = []
                 grades[s["grade"]].append(s)
+            # Determine highest score and randomly choose a student with that score
+            # for each grade
             for grade, stus in grades.items():
                 max_score = max([s["points"] for s in stus])
                 scorers = [s for s in stus if s["points"] == max_score]
                 winner = random.choice(scorers)
                 students.remove(winner)
                 winners[f"Grade {grade}"] = winner
+
+        # Only pick random winners if there are still students left
         if rngscore == "all" and len(students) > 0:
             winner = random.choice(students)
             students.remove(winner)
@@ -195,12 +214,10 @@ class QuarterlyWinnerView(View):
         context["winners"] = winners
         context["prizes"] = Prize.objects.all().order_by("-points", "name")
 
+        # Clear points if requested
         if request.POST.get("clearpoints"):
-            for student in winners.values():
-                student = Student.objects.get(id=student["id"])
-                student.points = 0
-                student.save()
-        if request.POST.get("clearpointsall"):
+            Student.objects.filter(id__in=[s["id"] for s in winners.values()]).update(points=0)
+        elif request.POST.get("clearpointsall"):
             Student.objects.all().update(points=0)
 
         # Create log entries
@@ -215,6 +232,8 @@ class QuarterlyWinnerView(View):
 
 
 class ImportBackupView(View):
+    """Import/Backup page"""
+
     @method_decorator(staff_member_required)
     def dispatch(self, *args, **kwargs):
         return super().dispatch(*args, **kwargs)
@@ -229,6 +248,7 @@ class ImportBackupView(View):
 
     @method_decorator(permission_required("actions.can_import_data", login_url="/admin/"))
     def post(self, request):
+        # Import data action
         context = dict(
             admin.site.each_context(request),
             title='Import/Backup Data',
@@ -267,6 +287,7 @@ class ImportBackupView(View):
 
 @permission_required("actions.can_backup_data", login_url="/admin/")
 def create_backup(request):
+    # Backup data action
     tf = tempfile.TemporaryFile(mode='w+')
     call_command("dumpdata", *[
         "main.eventCategory",

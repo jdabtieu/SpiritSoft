@@ -1,20 +1,22 @@
 from pathlib import Path
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+# Base path for Django
 BASE_DIR = Path(__file__).parent.parent
 
+# Secret key used for cookies
 SECRET_KEY = 'django-insecure-8b0^zb*9fk0qmziby8wd(yz*^*sep$0%4$!9s(hz1#$%3@h1o@'
 
+# Uncomment this line and add a custom message corresponding to your backup schedule
 # AUTOBACKUP_MSG = 'Automatic backups are configured to run once an hour, but you may perform a manual backup.'
 
-# SECURITY WARNING: don't run with debug turned on in production!
+# Change to False in production
 DEBUG = True
 
+# Edit this to use your domain name
 ALLOWED_HOSTS = ['spiritsoft.localhost']
 
 
-# Application definition
-
+# Active Django apps and components
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -26,7 +28,6 @@ INSTALLED_APPS = [
     'main',
     'actions',
 ]
-
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -35,9 +36,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
 ]
-
 ROOT_URLCONF = 'SpiritSoft.urls'
-
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -53,13 +52,9 @@ TEMPLATES = [
         },
     },
 ]
-
 WSGI_APPLICATION = 'SpiritSoft.wsgi.application'
 
-
-# Database
-# https://docs.djangoproject.com/en/4.1/ref/settings/#databases
-
+# Database - do not change
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -67,10 +62,7 @@ DATABASES = {
     },
 }
 
-
-# Password validation
-# https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
-
+# Django default password checker - do not change
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -86,28 +78,20 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
-# Internationalization
-# https://docs.djangoproject.com/en/4.1/topics/i18n/
-
+# Change these settings for your region
 LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = 'EST'
-
 USE_I18N = True
-
 USE_TZ = False
 
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/4.1/howto/static-files/
-
+# Do not change
 STATIC_URL = 'static/'
+
+# Location to export static files
 STATIC_ROOT = '/data/assets'
 if DEBUG:
     STATIC_ROOT = 'compiledassets'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
-
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

@@ -3,9 +3,10 @@ from django.contrib.auth.models import Group
 
 from .models import *
 
-
+# SpiritSoft doesn't use Django groups
 admin.site.unregister(Group)
 
+# Register all the models with appropriate titles
 class CustomEventCategoryAdmin(admin.ModelAdmin):
     search_fields = ['name']
     ordering = ['name']

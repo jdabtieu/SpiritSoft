@@ -1,3 +1,7 @@
+#!/bin/bash
+
+# Builds the web app and embedded chromium browser into a desktop app
+
 OLD_WD="$(pwd)"
 rm -rf /tmp/SpiritSoftBuild
 git clone $(pwd) /tmp/SpiritSoftBuild

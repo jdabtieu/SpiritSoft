@@ -2,9 +2,11 @@ from django.urls import path, include
 from django.shortcuts import redirect, render
 
 def login_redir(request):
+    """There is no homepage"""
     return redirect('/admin/')
 
 def iframed(request):
+    """IFrame view for embedded (desktop) app"""
     return render(request, 'iframed.html')
 
 urlpatterns = [

@@ -1,3 +1,4 @@
+{# Import/Backup page #}
 {% extends "admin/base_site.html" %}
 
 {% load static %}
@@ -5,6 +6,7 @@
 {% block content %}
 <link rel="stylesheet" href="{% static 'admin/css/forms.css' %}">
 {% if autobackup_msg %}
+    {# Defined in SpiritSoft/settings.py #}
     <p style="margin: -1.5em 0 1.5em 0;">{{ autobackup_msg }}</p>
 {% endif %}
 <div class="flex-desktop" style="gap: 3em;">

@@ -66,11 +66,13 @@ class Attendance(models.Model):
 
 @receiver(post_save, sender=Event)
 def create_attendance(sender, instance, created, **kwargs):
+    """Create an Attendance object when an Event is created"""
     if created:
         Attendance.objects.create(event=instance).save()
 
 @receiver(pre_save, sender=Event)
 def update_event_points(sender, instance, **kwargs):
+    """Update points of students if event points changed"""
     if instance.pk is None:  # Object being created
         return
     try:
@@ -82,11 +84,13 @@ def update_event_points(sender, instance, **kwargs):
 
 @receiver(pre_delete, sender=Event)
 def delete_event_points(sender, instance, **kwargs):
+    """Update points of students if event is deleted"""
     instance.attendance.students.all().update(points=Greatest(F('points') - instance.points, 0))
 
 
 @receiver(m2m_changed, sender=Attendance.students.through)
 def update_attendance(sender, instance, action, pk_set, **kwargs):
+    """Update points of students when their attendance changes"""
     if action == "pre_add":
         s = Student.objects.filter(pk__in=pk_set)
         s.update(points=F('points') + instance.event.points)

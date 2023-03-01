@@ -7,7 +7,9 @@ school administrators, teachers, and groups.
 ![Cover Image](gh-resources/cover.png)
 
 ## Demo
-A **live demo** is available [here](https://spiritsoft.co/admin/login/)
+A **live demo** is available [here](https://spiritsoft.co/admin/login/)<br>
+Username: `fbla`<br>
+Password: `fblaadmin`
 
 ## Installation
 SpiritSoft is distributed in two ways: a web version and a desktop app. You should use the web

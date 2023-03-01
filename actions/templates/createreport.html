@@ -1,3 +1,4 @@
+{# Create point reports #}
 {% extends "admin/base_site.html" %}
 
 {% load static %}
@@ -62,9 +63,6 @@
             document.querySelector(query).classList.add("no-print");
         }
         window.print();
-        if (navigator.userAgent.index(QtWebEngine) != -1) {
-            
-        }
         for (let query of queries) {
             document.querySelector(query).classList.remove("no-print");
         }
