@@ -83,7 +83,10 @@ class CustomAttendanceAdmin(admin.ModelAdmin):
         return False
 
     def has_delete_permission(self, request, obj=None):
-        return False
+        if obj:
+            return f"{obj._meta.app_label}/{obj._meta.model_name}" not in request.path
+        else:
+            return False
 admin.site.register(Attendance, CustomAttendanceAdmin)
 
 

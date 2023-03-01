@@ -4,6 +4,9 @@
 
 {% block content %}
 <link rel="stylesheet" href="{% static 'admin/css/forms.css' %}">
+{% if autobackup_msg %}
+    <p style="margin: -1.5em 0 1.5em 0;">{{ autobackup_msg }}</p>
+{% endif %}
 <div class="flex-desktop" style="gap: 3em;">
     <div class="fl-1 mb-3">
         <h1>Import Data</h1>
@@ -27,7 +30,6 @@
         <div class="submit-row">
             <input type="submit" value="Backup" class="default" name="_save" id="backupBtn">
         </div>
-        <a href="/admin/actions/backupdl/?ext">b</a>
     </div>
 </div>
 <script>

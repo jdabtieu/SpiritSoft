@@ -5,6 +5,8 @@ BASE_DIR = Path(__file__).parent.parent
 
 SECRET_KEY = 'django-insecure-8b0^zb*9fk0qmziby8wd(yz*^*sep$0%4$!9s(hz1#$%3@h1o@'
 
+# AUTOBACKUP_MSG = 'Automatic backups are configured to run once an hour, but you may perform a manual backup.'
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -62,7 +64,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    },
 }
 
 

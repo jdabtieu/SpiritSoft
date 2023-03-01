@@ -80,7 +80,17 @@
         border-right: none;
     }
 
-    .quarterly-main {
+    @media screen and (max-width: 1360px) {
+        #content-main.quarterly-main {
+            float: none;
+        }
+        #content-related.quarterly-related {
+            margin: 0!important;
+            float: none;
+        }
+    }
+
+    #content-main.quarterly-main {
         width: calc(100% - 276px);
     }
 
@@ -123,7 +133,6 @@
 
     @media screen and (max-width: 999px) {
         #content-related.quarterly-related {
-            margin: 0;
             width: 100%;
         }
     }

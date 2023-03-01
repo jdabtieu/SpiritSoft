@@ -1,5 +1,6 @@
 import csv
 from datetime import datetime
+from django.conf import settings
 from django.contrib import admin, messages
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import permission_required
@@ -8,8 +9,11 @@ from django.http import FileResponse
 from django.shortcuts import render
 from django.utils.decorators import method_decorator
 from django.views import View
+import os
 import random
 import tempfile
+import traceback
+import uuid
 
 from main.models import Student, Prize
 from .models import *
@@ -219,6 +223,7 @@ class ImportBackupView(View):
         context = dict(
             admin.site.each_context(request),
             title='Import/Backup Data',
+            autobackup_msg=getattr(settings, "AUTOBACKUP_MSG", ""),
         )
         return render(request, "importbackup.html", context)
 
@@ -227,9 +232,37 @@ class ImportBackupView(View):
         context = dict(
             admin.site.each_context(request),
             title='Import/Backup Data',
+            autobackup_msg=getattr(settings, "AUTOBACKUP_MSG", ""),
         )
-        
-        return render(request, "importbackup.html", context)
+
+        # Create temporary database and datafile
+        tmpfile = f"{uuid.uuid4()}.json"
+        tmpdb = f"{uuid.uuid4()}.sqlite3"
+        with open(tmpfile, "wb") as fixture:
+            fixture.write(request.FILES["data"].read())
+
+        # Backup database
+        with open(settings.DATABASES["default"]["NAME"], "rb") as prim:
+            with open(tmpdb, "wb") as sec:
+                sec.write(prim.read())
+        try:
+            # Clear database and load data
+            call_command("flush", "--noinput")
+            call_command("loaddata", tmpfile)
+            messages.success(request, "Successfully imported backup!")
+            return render(request, "importbackup.html", context)
+        except Exception:
+            # Restore database on fail
+            with open(tmpdb, "rb") as prim:
+                with open(settings.DATABASES["default"]["NAME"], "wb") as sec:
+                    sec.write(prim.read())
+            messages.error(request, "Failed to load data")
+            messages.error(request, traceback.format_exc().splitlines()[-1])
+            return render(request, "importbackup.html", context)
+        finally:
+            # Cleanup
+            os.unlink(tmpfile)
+            os.unlink(tmpdb)
 
 
 @permission_required("actions.can_backup_data", login_url="/admin/")
@@ -244,7 +277,9 @@ def create_backup(request):
         "main.student",
         "actions.quarterlyWinner",
         "auth.user",
-        "--indent=2"
+        "--indent=2",
+        "--exclude=auth.permission",
+        "--exclude=contenttypes",
     ], stdout=tf)
     tf.seek(0)
     data = tf.read().encode("utf-8")
