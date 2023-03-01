@@ -1,15 +1,19 @@
+from django.conf import settings
 from django.urls import path, include
 from django.shortcuts import redirect, render
 
-def login_redir(request):
-    """There is no homepage"""
-    return redirect('/admin/')
+def homepage(request):
+    """Display homepage if configured"""
+    if settings.HOMEPAGE:
+        return render(request, 'homepage.html')
+    else:
+        return redirect('/admin/')
 
 def iframed(request):
     """IFrame view for embedded (desktop) app"""
     return render(request, 'iframed.html')
 
 urlpatterns = [
-    path('', login_redir, name='root_redirect'),
+    path('', homepage, name='root_redirect'),
     path('iframe/', iframed, name='iframed_container'),
 ]

@@ -16,6 +16,16 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
+    @keyframes fade-in {
+        0%   {opacity: 0;}
+        100% {opacity: 100%;}
+    }
+
+    #content {
+        animation-name: fade-in;
+        animation-duration: 0.3s;
+    }
+    
     h1#site-name a:link, h1#site-name a:visited, #nav-sidebar .current-app .section:link, #nav-sidebar .current-app .section:visited, #content > h1 {
         font-family: 'Inter', 'Roboto', sans-serif;
         font-weight: 700;

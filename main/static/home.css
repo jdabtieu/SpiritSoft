@@ -1,0 +1,134 @@
+#banner {
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+    height: 100vh;
+    background-image: url(/static/cover.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+}
+
+#banner-mask {
+    background-image: linear-gradient(180deg, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.8));
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+}
+
+#banner-heading {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    margin-left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+}
+
+#banner-heading h1 {
+    font-size: 7rem;
+}
+
+#banner-heading h3 {
+    font-size: 2.5rem;
+}
+
+#banner-heading p, #banner-heading .btn {
+    font-size: 1.5rem;
+}
+
+@media screen and (max-width: 1200px) {
+    #banner-heading h1 {
+        font-size: 5rem;
+    }
+    
+    #banner-heading h3 {
+        font-size: 1.75rem;
+    }
+
+    #banner-heading p, #banner-heading .btn {
+        font-size: 1rem;
+    }
+}
+
+@media screen and (max-width: 800px) {
+    #banner-heading h1 {
+        font-size: 3rem;
+    }
+    
+    #banner-heading h3 {
+        font-size: 1rem;
+    }
+}
+
+.home-img {
+    height: 200px;
+    width: 200px;
+    padding: 30px;
+    border-radius: 30px;
+    margin: 8px 12px;
+}
+
+@media screen and (min-width: 500px) {
+    .home-text {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+}
+
+@media screen and (max-width: 499px) {
+    .home-img {
+        display: block;
+        margin: 8px auto;
+    }
+}
+
+
+body {
+    scroll-behavior: smooth;
+    overflow: overlay;
+    font-family: "Inter", "Roboto", "Lucida Grande", Arial, sans-serif;
+}
+
+main {
+    padding-top: 3rem!important;
+    padding-bottom: 3rem!important;
+}
+
+a, a.btn, nav a:hover, a.btn:hover {
+    text-decoration: none;
+}
+
+a:hover, a:focus {
+    text-decoration: underline;
+}
+
+.flex {
+    display: flex;
+}
+
+.bg-primary {
+    background-color: #006be8!important;
+}
+
+@media screen and (max-width: 700px) {
+    .desktop {
+        display: none;
+    }
+}
+
+@media screen and (min-width: 701px) {
+    .mobile {
+        display: none;
+    }
+
+    .flex-desktop {
+        display: flex;
+    }
+}
+
+.hidden {
+    display: none!important;
+}
