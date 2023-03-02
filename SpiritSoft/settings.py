@@ -10,7 +10,7 @@ SECRET_KEY = 'django-insecure-8b0^zb*9fk0qmziby8wd(yz*^*sep$0%4$!9s(hz1#$%3@h1o@
 # AUTOBACKUP_MSG = 'Automatic backups are configured to run once an hour, but you may perform a manual backup.'
 
 # Change to True if you would like to display a homepage (at main/templates/homepage.html)
-HOMEPAGE = True
+HOMEPAGE = False
 
 # Change to False in production
 DEBUG = True

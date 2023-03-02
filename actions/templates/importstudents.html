@@ -9,7 +9,7 @@
     {% csrf_token %}
     <div class="module aligned">
         <div class="mb-3">
-            <input type="file" name="data" required>
+            <input type="file" name="data" accept=".csv" required>
         </div>
         Data can be uploaded in <a href="{% static 'admin/sample_student_data.csv' %}?ext">this format</a> or in PowerSchool format.
     </div>

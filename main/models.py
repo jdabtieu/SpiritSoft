@@ -59,7 +59,7 @@ class Attendance(models.Model):
     students = models.ManyToManyField(Student, blank=True)
 
     class Meta:
-        verbose_name_plural = 'attendance'
+        verbose_name_plural = 'attendances'
 
     def __str__(self):
         return str(self.event)
