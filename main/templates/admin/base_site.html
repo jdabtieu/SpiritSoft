@@ -32,6 +32,21 @@
         color: black;
     }
 
+    iframe.helpifr {
+        width: 1200px;
+        height: 600px;
+        border: 1px solid black;
+    }
+
+    .help-header {
+        font-weight: 700;
+    }
+
+    .img-caption {
+        font-style: italic;
+        margin: -2px 0 6px 0;
+    }
+
     .mb-3 {
         margin-bottom: 1rem!important;
     }
@@ -231,10 +246,12 @@
       --default-button-bg: var(--header-bg);
       --header-color: var(--body-fg);
       --header-link-color: var(--body-fg);
+      --header-branding-color: var(--body-fg);
       --breadcrumbs-bg: var(--primary);
       --breadcrumbs-fg: var(--body-fg);
       --breadcrumbs-link-fg: var(--body-fg);
       --link-selected-fg: var(--link-fg);
+      --button-bg: var(--header-bg);
       --body-quiet-color: var(--body-fg);
     }
 </style>
@@ -249,7 +266,7 @@
     <button type="submit">Log out</button>
 </form>
 <div id="help">
-    <a href="https://spiritsoft.co/help" target="_blank" title="SpiritSoft Help">?</a>
+    <a href="/help/" target="_blank" title="SpiritSoft Help">?</a>
 </div>
 {% endblock %}
 

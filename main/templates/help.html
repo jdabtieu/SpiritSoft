@@ -1,0 +1,323 @@
+{% extends "admin/base_site.html" %}
+{% load i18n static %}
+
+{% block extrastyle %}{{ block.super }}<link rel="stylesheet" href="{% static "admin/css/dashboard.css" %}">{% endblock %}
+
+{% block nav-sidebar %}{% endblock %}
+
+{% block content %}
+<script>
+    document.querySelector(".breadcrumbs").innerHTML += "> Help";
+    document.querySelector("#site-name").innerHTML += " Help"
+</script>
+<div>
+    <h1 class="help-header">How do I create an event?</h1>
+    <div class="mb-3">
+        <p>
+            On the Events page, there is an Add Event button. Once you click it, you can
+            type in its name, date, points, and optionally set a category for easy organization.
+            Then, click Save to save it.
+        </p>
+        <details>
+            <summary>Try it out!</summary>
+            <iframe id="help-1" class="helpifr"></iframe>
+        </details>
+        <script>
+            (function() {
+                const ifr = document.querySelector("#help-1");
+                const actions = new Map()
+                
+                function eventlist() {
+                    if (ifr.contentDocument.querySelector("li.success") != null) {
+                        alert("Congratulations! You created an event!");
+                        return;
+                    }
+
+                    for (let a of ifr.contentDocument.querySelectorAll("a")) {
+                        if (a.pathname != "/admin/main/event/add/") {
+                            a.addEventListener("click", e => {
+                                e.preventDefault();
+                                alert("That's not the Add Event button");
+                            });
+                        }
+                    }
+
+                    for (let a of ifr.contentDocument.querySelectorAll("button")) {
+                        a.addEventListener("click", e => {
+                            e.preventDefault();
+                            alert("That's not the Add Event button");
+                        });
+                    }
+
+                    for (let a of ifr.contentDocument.querySelectorAll("input[type=submit]")) {
+                        a.addEventListener("click", e => {
+                            e.preventDefault();
+                            alert("That's not the Add Event button");
+                        });
+                    }
+                }
+
+                function addpage() {
+                    for (let a of ifr.contentDocument.querySelectorAll("a")) {
+                        if (a.href.endsWith("#")) {} // pass
+                        else if (a.id == "change_id_category") {
+                            a.addEventListener("click", e => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                alert("You can use this button to rename the selected category");
+                            });
+                        } else if (a.id == "add_id_category") {
+                            a.addEventListener("click", e => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                alert("You can use this button to create a new category");
+                            });
+                        } else if (a.id == "delete_id_category") {
+                            a.addEventListener("click", e => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                alert("You can use this button to delete the selected category");
+                            });
+                        } else if (a.id == "view_id_category") {
+                            a.addEventListener("click", e => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                alert("You can use this button to view the selected category");
+                            });
+                        } else {
+                            a.addEventListener("click", e => {
+                                e.preventDefault();
+                            });
+                        }
+                    }
+
+                    for (let a of ifr.contentDocument.querySelectorAll("button")) {
+                        a.addEventListener("click", e => {
+                            e.preventDefault();
+                        });
+                    }
+
+                    for (let a of ifr.contentDocument.querySelectorAll("input[type=submit]")) {
+                        if (a.name != "_save") {
+                            a.addEventListener("click", e => {
+                                e.preventDefault();
+                                alert("Please click the SAVE button instead");
+                            });
+                        }
+                    }
+                }
+
+                actions["/admin/main/event/"] = eventlist;
+                actions["/admin/main/event/add/"] = addpage;
+
+                ifr.onload = e => actions[e.target.contentWindow.location.pathname]();
+                ifr.src = "/admin/main/event/";
+            })();
+        </script>
+    </div>
+    <h1 class="help-header">Can I search/sort for students?</h1>
+    <div class="mb-3">
+        <p>
+            Of course! You can use the search bar to search, and click on the table
+            headings to sort. Additionally, filter options are available on the right side.
+        </p>
+        <details>
+            <summary>Try it out!</summary>
+            <iframe id="help-2" class="helpifr"></iframe>
+        </details>
+        <script>
+            (function() {
+                const ifr = document.querySelector("#help-2");
+                const actions = new Map()
+                
+                function stulist() {
+                    if (ifr.contentDocument.querySelector("li.success") != null) {
+                        alert("Congratulations! You created an event!");
+                        return;
+                    }
+
+                    for (let a of ifr.contentDocument.querySelectorAll("a")) {
+                        if (a.parentElement.parentElement.parentElement.tagName == "DETAILS") {} // pass
+                        else if (a.parentElement?.parentElement?.parentElement?.parentElement?.parentElement?.id == "result_list") {} //pass
+                        else if (a?.parentElement?.parentElement?.parentElement?.id == "changelist-search") {} // pass
+                        else {
+                            a.addEventListener("click", e => {
+                                e.preventDefault();
+                                alert("That's not part of ssearch/sort/filtering");
+                            });
+                        }
+                    }
+
+                    for (let a of ifr.contentDocument.querySelectorAll("button")) {
+                        a.addEventListener("click", e => {
+                            e.preventDefault();
+                            alert("That's not part of ssearch/sort/filtering");
+                        });
+                    }
+
+                    for (let a of ifr.contentDocument.querySelectorAll("input[type=submit]")) {
+                        if (a.value == "Search") {} // pass
+                        else {
+                            a.addEventListener("click", e => {
+                                e.preventDefault();
+                                alert("That's not part of ssearch/sort/filtering");
+                            });
+                        }
+                    }
+                }
+
+                actions["/admin/main/student/"] = stulist;
+
+                ifr.onload = e => actions[e.target.contentWindow.location.pathname]();
+                ifr.src = "/admin/main/student/";
+            })();
+        </script>
+    </div>
+    <h1 class="help-header">How do I add students to an event?</h1>
+    <div class="mb-3">
+        <p>
+            Go to the Attendance page and click on the event you want to update.
+            Then, find the student in the students list, click it, and then the right arrow to add them.
+            Repeat for as many students as you need. To remove students, find the student in the Chosen students
+            tab, click them, and press the left arrow.
+        </p>
+        <details>
+            <summary>Try it out!</summary>
+            <iframe id="help-3" class="helpifr"></iframe>
+        </details>
+        <script>
+            (function() {
+                const ifr = document.querySelector("#help-3");
+                
+                function list() {
+                    if (ifr.contentDocument.querySelector("li.success") != null) {
+                        alert("Congratulations! You updated the attendance!");
+                        return;
+                    }
+
+                    for (let a of ifr.contentDocument.querySelectorAll("a")) {
+                        if (a.parentElement.classList.contains("field-get_name")) {} // pass
+                        else {
+                            a.addEventListener("click", e => {
+                                e.preventDefault();
+                                alert("Please select an event");
+                            });
+                        }
+                    }
+
+                    for (let a of ifr.contentDocument.querySelectorAll("button")) {
+                        a.addEventListener("click", e => {
+                            e.preventDefault();
+                            alert("That's not part of ssearch/sort/filtering");
+                        });
+                    }
+
+                    for (let a of ifr.contentDocument.querySelectorAll("input[type=submit]")) {
+                        if (a.value == "Search") {} // pass
+                        else {
+                            a.addEventListener("click", e => {
+                                e.preventDefault();
+                                alert("That's not part of ssearch/sort/filtering");
+                            });
+                        }
+                    }
+                }
+
+                function page() {
+                    for (let a of ifr.contentDocument.querySelectorAll("a")) {
+                        if (a.href.endsWith("#")) {} // pass
+                        else if (a.id == "add_id_students") {
+                            a.addEventListener("click", e => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                alert("You can use this button to add new students");
+                            });
+                        } else {
+                            a.addEventListener("click", e => {
+                                e.preventDefault();
+                            });
+                        }
+                    }
+
+                    for (let a of ifr.contentDocument.querySelectorAll("button")) {
+                        a.addEventListener("click", e => {
+                            e.preventDefault();
+                        });
+                    }
+
+                    for (let a of ifr.contentDocument.querySelectorAll("input[type=submit]")) {
+                        if (a.name != "_save") {
+                            a.addEventListener("click", e => {
+                                e.preventDefault();
+                                alert("Please click the SAVE button instead");
+                            });
+                        }
+                    }
+                }
+
+                function dispatch(e) {
+                    if (e.target.contentWindow.location.pathname == "/admin/main/attendance/") list();
+                    else page();
+                }
+
+                ifr.onload = dispatch;
+                ifr.src = "/admin/main/attendance/";
+            })();
+        </script>
+    </div>
+    <h1 class="help-header">How do I use the Event/Prize Categories?</h1>
+    <div class="mb-3">
+        <div>
+            You can use these categories for easy organization. On the Events and Prizes pages, you can filter
+            events and prizes by their categories. These will also appear on reports.<br>
+            <img src="{% static 'help/cat.png' %}" style="border: 1px solid black; margin: 6px 2px;"><br>
+            <div class="img-caption">The add/change event page</div>
+            On the add/change event page, you can select a category that already exists, or add a new one
+            by clicking the green plus icon.
+
+            The steps for selecting categories for prizes is the same, on the add/change prizes page.
+        </div>
+    </div>
+
+    <h1 class="help-header">How can I see who is currently in the lead?</h1>
+    <div class="mb-3">
+        <p>
+            You can go to the Create Report page to determine the leader. This will also give you
+            the full leaderboard. You can choose to find the overall leader, or the leader by grade.
+        </p>
+        <details>
+            <summary>Try it out!</summary>
+            <iframe id="help-4" class="helpifr"></iframe>
+        </details>
+        <script>
+            (function() {
+                const ifr = document.querySelector("#help-4");
+                
+                function page() {
+                    if (ifr.contentDocument.body.innerText.indexOf("PLACEMENT") != -1) {
+                        alert("Congratulations! You found the leader and created a scoreboard!");
+                        return;
+                    }
+
+                    for (let a of ifr.contentDocument.querySelectorAll("a")) {
+                        a.addEventListener("click", e => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                        });
+                    }
+
+                    for (let a of ifr.contentDocument.querySelectorAll("button")) {
+                        a.addEventListener("click", e => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                        });
+                    }
+                }
+
+                ifr.onload = page;
+                ifr.src = "/admin/actions/createreport/";
+            })();
+        </script>
+    </div>
+</div>
+{% endblock %}
